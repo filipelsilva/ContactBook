@@ -10,4 +10,4 @@ Informations about the usage are inside the program, hope you enjoy!
 - Insert security checks
 - General polish
 
-## Version 0.1
+## Version 0.2
