@@ -22,8 +22,15 @@ def parser(contact):
     return name, number, email
 
 def print_contact(contact):
-    name, number, email = parser(contact)
-    print("{}\t{}\t{}".format(name, number, email))
+    if contact == "":
+        name = "Name"
+        number = "Number"
+        email = "Email"
+    
+    else:
+        name, number, email = parser(contact)
+    
+    print("{0:<25}\t{1:<15}\t{2:<40}".format(name, number, email))
 
 def query(string):
     choice = int(input(string))
@@ -101,7 +108,7 @@ def list_contact(name):
     
     _, contact = find_contact(name)
 
-    print("\nName\tNumber\tEmail\n")
+    print_contact("")
 
     print_contact(contact)
 
@@ -113,7 +120,7 @@ def list_all_contacts():
         print("NO CONTACTS")
         return
 
-    print("Name\tNumber\tEmail\n")
+    print("{0:<25}\t{1:<15}\t{2:<40}\n".format("Name", "Number", "Email"))
 
     for contact in contacts:
         print_contact(contact)
