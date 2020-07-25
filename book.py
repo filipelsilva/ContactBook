@@ -48,12 +48,20 @@ def find_contact(name):
     return -1, "" # not found
 
 def add_contact(name, number, email):
+    if find_contact(name)[0] != -1:
+        print("ERROR: ALREADY EXISTING CONTACT")
+        return
+    
     add = name + ":" + number + ":" + email
 
     with open("data", "a") as file:
         file.write(add)
 
 def remove_contact(index):
+    if index == -1: #caso nao haja contacto para remover
+        print("ERROR: NON EXISTING CONTACT")
+        return
+    
     with open("data", "r") as file:
         contacts = file.readlines()
 
@@ -63,6 +71,10 @@ def remove_contact(index):
         file.writelines(contacts)
 
 def edit_contact(index, contact):
+    if index == -1: #caso nao haja contacto para editar
+        print("ERROR: NON EXISTING CONTACT")
+        return
+    
     name, number, email = parser(contact)
     remove_contact(index)
 
@@ -83,6 +95,10 @@ def edit_contact(index, contact):
     add_contact(name, number, email)
 
 def list_contact(name):
+    if find_contact(name)[0] != -1:
+        print("ERROR: ALREADY EXISTING CONTACT")
+        return
+    
     _, contact = find_contact(name)
 
     print("\nName\tNumber\tEmail\n")
@@ -93,6 +109,10 @@ def list_all_contacts():
     with open("data", "r") as file:
         contacts = file.readlines()
     
+    if contacts == []:
+        print("NO CONTACTS")
+        return
+
     print("Name\tNumber\tEmail\n")
 
     for contact in contacts:
@@ -104,7 +124,7 @@ if __name__ == "__main__":
     print("################################")
     
     while True:
-        print("\nWhat do you want to do?")
+        print("\nPlease choose an option")
         print("\t1. Add contact\n\t2. Remove contact")
         print("\t3. Edit contact\n\t4. List a contact")
         print("\t5. List all contacts\n\t6. Exit")
