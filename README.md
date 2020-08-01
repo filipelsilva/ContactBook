@@ -6,8 +6,7 @@ Informations about the usage are inside the program, hope you enjoy!
 
 ## To-do list
 
-- Maybe change the database type
-- Insert security checks
+- Include a hash list
 - General polish
 
 ## Version 0.2
