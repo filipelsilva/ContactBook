@@ -1,131 +1,111 @@
 __desc__ = "Command line contact book"
 __author__ = "Filipe Ligeiro Silva"
 
-def parser(contact):
-    i = 0
-    name = ""
-    number = ""
-    email = ""
-    
-    while contact[i] != ":":
-        name += contact[i]
-        i += 1
+from translators import *
 
-    i += 1
-    while contact[i] != ":":
-        number += contact[i]
-        i += 1
+database = []
 
-    i += 1
-    email = contact[i:]
+def load_db():
+    with open("data") as file:
+        text = file.readlines()
     
-    return name, number, email
+    for el in text:
+        name, number, email = text_to_contact(el)
+        
+        database.append(contact(name, number, email))
+
+def save_db():
+    with open("data", "w") as file:
+        for el in database:
+            add = contact_to_text(el)
+
+            file.write(add)
 
 def print_contact(contact):
     if contact == "":
-        name = "Name"
-        number = "Number"
-        email = "Email"
+        print("{0:<25}\t{1:<15}\t{2:<40}".format("Name", "Number", "Email"))
     
     else:
-        name, number, email = parser(contact)
-    
-    print("{0:<25}\t{1:<15}\t{2:<40}".format(name, number, email))
+        print(contact)
 
-def query(string):
+def query(string, inicial, final):
     choice = int(input(string))
 
-    while choice not in range(1,7):
+    while choice not in range(inicial, final + 1):
         print("Non existent option, please try again")
         choice = int(input(string))
 
     return choice
 
 def find_contact(name):
-    with open("data", "r") as file:
-        contacts = file.readlines()
-    
     i = 0
-    for contact in contacts:
-        if name in contact:
-            return i, contact
+    for contact in database:
+        if name in contact.get_name():
+            return i # index of the contact in the list
         
         i += 1
 
     return -1, "" # not found
 
 def add_contact(name, number, email):
-    if find_contact(name)[0] != -1:
+    if find_contact(name) != -1:
         print("ERROR: ALREADY EXISTING CONTACT")
         return
     
-    add = name + ":" + number + ":" + email
+    new = contact(name, number, email)
 
-    with open("data", "a") as file:
-        file.write(add)
+    database.append(new)
 
 def remove_contact(index):
-    if index == -1: #caso nao haja contacto para remover
+    index = find_contact(name)
+
+    if index == -1:
         print("ERROR: NON EXISTING CONTACT")
         return
-    
-    with open("data", "r") as file:
-        contacts = file.readlines()
 
-    del(contacts[index])
+    del(database[index])
 
-    with open("data", "w") as file:
-        file.writelines(contacts)
+def edit_contact(name):
+    index = find_contact(name)
 
-def edit_contact(index, contact):
-    if index == -1: #caso nao haja contacto para editar
+    if index == -1:
         print("ERROR: NON EXISTING CONTACT")
         return
-    
-    name, number, email = parser(contact)
-    remove_contact(index)
+
 
     print("New data (press ENTER to not change something:")
     new_name = input("\tName: ")
     new_number = input("\tNumber: ")
     new_email = input("\tEmail: ")
 
-    if new_name != "":
-        name = new_name
-    
-    if new_number != "":
-        number = new_number
-    
-    if new_email != "":
-        email = new_email
-    
-    add_contact(name, number, email)
+    database[index].change_name(new_name)
+    database[index].change_number(new_number)
+    database[index].change_email(new_email)
 
 def list_contact(name):
-    if find_contact(name)[0] != -1:
-        print("ERROR: ALREADY EXISTING CONTACT")
+    index = find_contact(name)
+
+    if index == -1:
+        print("ERROR: NON EXISTING CONTACT")
         return
-    
-    _, contact = find_contact(name)
 
     print_contact("")
 
-    print_contact(contact)
+    print_contact(database[index])
 
 def list_all_contacts():
-    with open("data", "r") as file:
-        contacts = file.readlines()
-    
-    if contacts == []:
+    if database == []:
         print("NO CONTACTS")
         return
 
-    print("{0:<25}\t{1:<15}\t{2:<40}\n".format("Name", "Number", "Email"))
+    print_contact("")
 
-    for contact in contacts:
+    for contact in database:
         print_contact(contact)
 
 if __name__ == "__main__":
+    load_db()
+
     print("################################")
     print("# Welcome to your Contact Book #")
     print("################################")
@@ -135,7 +115,7 @@ if __name__ == "__main__":
         print("\t1. Add contact\n\t2. Remove contact")
         print("\t3. Edit contact\n\t4. List a contact")
         print("\t5. List all contacts\n\t6. Exit")
-        choice = query("")
+        choice = query("", 1, 6)
         print("\n")
         
         if choice == 1:
@@ -147,15 +127,11 @@ if __name__ == "__main__":
         
         elif choice == 2:
             name = input("Name of the contact to be removed: ")
-            index, _ = find_contact(name)
-
-            remove_contact(index)
+            remove_contact(name)
         
         elif choice == 3:
             name = input("Name of the contact to be edited: ")
-            index, contact = find_contact(name)
-
-            edit_contact(index, contact)
+            edit_contact(name)
         
         elif choice == 4:
             name = input("Name of the contact to be listed: ")
@@ -165,4 +141,12 @@ if __name__ == "__main__":
             list_all_contacts()
 
         elif choice == 6:
+            question = "Do you wish to save the changes made?\
+                \n\t1. Yes\n\t2. No\n"
+
+            choice = query(question, 1, 2)
+
+            if choice == 1:
+                save_db()
+
             exit()     
