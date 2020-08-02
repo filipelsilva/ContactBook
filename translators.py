@@ -1,7 +1,7 @@
-__desc__ = "Translators between contact and text for the Contact Book "
+__desc__ = "Translators between contact and text"
 __author__ = "Filipe Ligeiro Silva"
 
-from contact import contact
+from class_contact import contact
 
 def text_to_contact(text):
     i = 0
