@@ -1,4 +1,4 @@
-# ContactBook (version 0.4)
+# ContactBook (version 0.6)
 
 A program to manage your contacts, written in Python3, made by Filipe Ligeiro Silva
 
@@ -63,4 +63,3 @@ python3 contact_book.py -la
 ## To-do list
 
 - Maybe change the argparse
-- General polish
