@@ -7,6 +7,7 @@ from class_contact import contact
 def print_contact(contact):
     if contact == "":
         print("{0:<25}\t{1:<15}\t{2:<40}".format("Name", "Number", "Email"))
+        print("=" * (25 + 15 + 40))
     
     else:
         print(contact)

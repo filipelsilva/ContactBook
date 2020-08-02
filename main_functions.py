@@ -6,7 +6,8 @@ from database_functions import database
 from class_contact import contact
 
 def add_contact(name, number, email):
-    if find_contact(name) == -1:
+    index = find_contact(name)
+    if index != -1 and database[index].get_name() == name:
         print("ERROR: ALREADY EXISTING CONTACT")
         return
     
@@ -29,7 +30,6 @@ def edit_contact(name):
     if index == -1:
         print("ERROR: NON EXISTING CONTACT")
         return
-
 
     print("New data (press ENTER to not change something:")
     new_name = input("\tName: ")

@@ -19,9 +19,9 @@ def text_to_contact(text):
         i += 1
 
     i += 1
-    email = text[i:]
+    email = text[i:-1]
     
     return name, number, email
 
 def contact_to_text(contact):
-    return contact.name + ":" + contact.number + ":" + contact.email
+    return contact.name + ":" + contact.number + ":" + contact.email + "\n"
