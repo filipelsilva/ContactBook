@@ -6,7 +6,12 @@ from database_functions import database
 from class_contact import contact
 
 def add_contact(name, number, email):
+    if name.strip() == "" or number.strip() == "" or email.strip() == "":
+        print("ERROR: Invalid value or values, do not leave spaces empty")
+        return
+    
     index = find_contact(name)
+
     if index != -1 and database[index].get_name() == name:
         print("ERROR: ALREADY EXISTING CONTACT")
         return
@@ -16,6 +21,10 @@ def add_contact(name, number, email):
     database.append(new)
 
 def remove_contact(name):
+    if name.strip() == "":
+        print("ERROR: Invalid value, do not leave spaces empty")
+        return
+    
     index = find_contact(name)
 
     if index == -1:
@@ -25,6 +34,10 @@ def remove_contact(name):
     del(database[index])
 
 def edit_contact(name):
+    if name.strip() == "":
+        print("ERROR: Invalid value, do not leave spaces empty")
+        return
+    
     index = find_contact(name)
 
     if index == -1:
@@ -41,6 +54,10 @@ def edit_contact(name):
     database[index].change_email(new_email)
 
 def list_contact(name):
+    if name.strip() == "":
+        print("ERROR: Invalid value, do not leave spaces empty")
+        return
+    
     index = find_contact(name)
 
     if index == -1:

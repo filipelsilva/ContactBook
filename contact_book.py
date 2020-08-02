@@ -17,9 +17,10 @@ def verbose_mode():
         print("\t1. Add contact\n\t2. Remove contact")
         print("\t3. Edit contact\n\t4. List a contact")
         print("\t5. List all contacts\n\t6. Exit")
+
         choice = query("", 1, 6)
-        print("\n")
-        
+        print("")
+
         if choice == 1:
             name = input("Name of the new contact: ")
             number = input("Number: ")
@@ -37,6 +38,7 @@ def verbose_mode():
         
         elif choice == 4:
             name = input("Name of the contact to be listed: ")
+            print("")
             list_contact(name)
         
         elif choice == 5:
