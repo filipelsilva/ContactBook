@@ -35,5 +35,16 @@ class contact:
         self.email = new
 
     def __repr__(self):
-        return("{0:<25}\t{1:<15}\t{2:<40}"\
-            .format(self.name, self.number, self.email))
+        name_pad = 30
+        number_pad = 15
+        email_pad = 40
+
+        ret = "{:<{x}}\t{:<{y}}\t{:<{z}}".format(self.name, self.number,\
+            self.email, x = name_pad, y = number_pad, z = email_pad)
+        
+        if self.name == "Name" and self.number == "Number"\
+            and self.email == "Email":
+
+            ret += "\n" + "=" * (name_pad + number_pad + email_pad)
+        
+        return ret

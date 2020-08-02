@@ -4,13 +4,13 @@ __author__ = "Filipe Ligeiro Silva"
 from database_functions import database
 from class_contact import contact
 
-def print_contact(contact):
-    if contact == "":
-        print("{0:<25}\t{1:<15}\t{2:<40}".format("Name", "Number", "Email"))
-        print("=" * (25 + 15 + 40))
+def print_contact(obj):
+    if obj == "":
+        dummy = contact("Name", "Number", "Email")
+        print(dummy)
     
     else:
-        print(contact)
+        print(obj)
 
 def query(string, inicial, final):
     choice = int(input(string))
