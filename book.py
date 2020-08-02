@@ -1,6 +1,7 @@
 __desc__ = "Command line contact book"
 __author__ = "Filipe Ligeiro Silva"
 
+import argparse
 from translators import *
 
 database = []
@@ -48,7 +49,7 @@ def find_contact(name):
     return -1, "" # not found
 
 def add_contact(name, number, email):
-    if find_contact(name) != -1:
+    if find_contact(name) == -1:
         print("ERROR: ALREADY EXISTING CONTACT")
         return
     
@@ -56,7 +57,7 @@ def add_contact(name, number, email):
 
     database.append(new)
 
-def remove_contact(index):
+def remove_contact(name):
     index = find_contact(name)
 
     if index == -1:
@@ -103,9 +104,7 @@ def list_all_contacts():
     for contact in database:
         print_contact(contact)
 
-if __name__ == "__main__":
-    load_db()
-
+def verbose_mode():
     print("################################")
     print("# Welcome to your Contact Book #")
     print("################################")
@@ -146,7 +145,47 @@ if __name__ == "__main__":
 
             choice = query(question, 1, 2)
 
-            if choice == 1:
-                save_db()
+            if choice == 2:
+                exit()
 
-            exit()     
+            return
+
+if __name__ == "__main__":
+    load_db()
+
+    help = "Check the README.md file"
+    parser = argparse.ArgumentParser(description=help)
+    functions = parser.add_mutually_exclusive_group()
+
+    functions.add_argument("-v", "--verbose", action="store_true")
+    functions.add_argument("-a", "--add", action="store_true")
+    functions.add_argument("-r", "--remove", action="store_true")
+    functions.add_argument("-e", "--edit", action="store_true")
+    functions.add_argument("-l", "--list", action="store_true")
+    functions.add_argument("-la", "--listall", action="store_true")
+
+    parser.add_argument("-n", "--name", dest="name", action="store")
+    parser.add_argument("-p", "--phone", dest="phone", action="store")
+    parser.add_argument("-m", "--email", dest="email" ,action="store")
+
+    args = parser.parse_args()
+
+    if args.verbose:
+        verbose_mode()
+    
+    elif args.add:
+        add_contact(args.name, args.phone, args.email)
+    
+    elif args.remove:
+        remove_contact(args.name)
+
+    elif args.edit:
+        edit_contact(args.name)
+    
+    elif args.list:
+        list_contact(args.name)
+    
+    elif args.listall:
+        list_all_contacts()
+    
+    save_db()
